@@ -29,9 +29,14 @@ if [ "$NEW_VERSION" != "$CUR_VERSION" ]; then
 
   unlink $tarball
 
-  printf "Moving CLI to /usr/local/bin/\n"
-
-  mv tenderly /usr/local/bin/
+  if [[ $EUID > 0 ]]
+  then
+    printf "Moving CLI to $HOME/.local/bin\n"
+	mv tenderly $HOME/.local/bin/
+  else 
+	printf "Moving CLI to /usr/local/bin/\n"
+	mv tenderly /usr/local/bin/
+  fi
 
   cd - > /dev/null
 
